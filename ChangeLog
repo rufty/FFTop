@@ -1,0 +1,5 @@
+0.1      Inital collection of relevant code from various previous projects.
+0.2      PortAudio recording and ncurses in the same file.
+0.3      Added in pthreads for live average sound levels.
+0.4      Pulled everything together, now does FFTs!
+0.5      Added smoothing and AGC.
