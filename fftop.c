@@ -302,6 +302,7 @@ showpsd()
 int
 main ( int argc, char* argv[] )
   {
+  (void) argc ; //FIXME
   #ifdef DEBUG
   char* logname ;
   asprintf ( &logname, "%s.log", basename ( argv[0] ) ) ;

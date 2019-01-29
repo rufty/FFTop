@@ -1,0 +1,41 @@
+This is a simple console utility that takes audio from the default input and displays a bouncy PSD, in curses!
+It requires pthreads, fftw3, portaudio and ncurses. And clang
+To install:
+    make
+    sudo make install
+And to uninstall:
+    sudo make uninstall
+
+On MacOS development was tested using the macports system.
+On FreeBSD, use gmake, not the regular make.
+On Windows 7 and 10 (8 untested) the MinGW64 system was used. This has 3 targets, 32bit, 64bit and msys.
+32bit and 64bit work when the fftop binary is renamed fftop.exe and then run from a cmd.exe console.
+Appears to compile on OpenBSD, but does nothing. I suspect I just haven't got recording enabled correctly...
+
+
+KNOWN ISSUES
+===== ======
+gmake tar on *BSD probably broken - use gnutar
+Using the lprintf logging reveals dropouts in the buffers. I suspect this is because the display thread is at
+normal priority and overloads. The usleep() value could be better tuned.
+Rapid resizing of the Xwindow fftop is running in can result in a mismatch between the buffer sizes and the
+quantity of data inserted - resulting in a crash. So don't do that.
+
+
+TODO
+====
+Add some command line configuration for sound input, fft size, update delay, sample rate, AGC, decay rate,
+colors, raw or 10*log10 display and so on.
+
+
+MISC
+====
+To make a portable binary on MacOS, use static libraries:
+    /opt/local/lib/libncurses.a
+    /opt/local/lib/libfftw3.a
+    /opt/local/lib/libportaudio.a
+And system frameworks:
+    -framework CoreFoundation
+    -framework AudioToolbox
+    -framework CoreAudio
+    -framework CoreServices
