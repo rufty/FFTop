@@ -4,38 +4,33 @@ VERSION=0.5
 # Where to install.
 PREFIX=/usr/local
 
+# Special compiler?
+CC=clang
+
+# Common options.
+CFLAGS=-std=c99 -pthread -W -Wall -DAPPNAME=$(APPNAME) -DVERSION=$(VERSION)
+LIBS=-lpthread -lncurses -lfftw3 -lportaudio
+#FIXME - remove debugging options
+CFLAGS+=-g -DDEBUG
+
 # What OS?
 UNAME:=$(shell uname)
-
-# Special compiler?
-ifeq ($(UNAME), Linux)
-CC=gcc
+ifeq (Linux, $(UNAME))
 endif
-ifeq ($(UNAME), Darwin)
-CC=gcc
+ifeq (Darwin, $(UNAME))
 endif
-ifeq ($(UNAME), FreeBSD)
-CC=clang
+ifeq (FreeBSD, $(UNAME))
 endif
-
-#MSYS_NT-6.1
-#MINGW32_NT-6.1
-#MINGW64_NT-6.1
-
-#MSYS_NT-6.3
-
-#MSYS_NT-10.0
-#MINGW32_NT-10.0
-#MINGW64_NT-10.0
-
-
-# Basic options.
-#FIXME - remove debugging options
-CFLAGS=-g -DDEBUG -std=c99 -pthread -W -Wall -DAPPNAME=$(APPNAME) -DVERSION=$(VERSION)
-LFLAGS=-g
-LIBS=-lpthread -lncurses -lfftw3 -lportaudio
-
-#-static -I/mingw32/include/ncurses -lwinmm -lsetupapi -lole32
+ifeq (MINGW32, $(findstring MINGW32, $(UNAME)))
+LFLAGS+=-static
+CFLAGS+=-I/mingw32/include/ncurses
+LIBS+=-lwinmm -lsetupapi -lole32
+endif
+ifeq (MINGW64, $(findstring MINGW64, $(UNAME)))
+LFLAGS+=-static -lwinmm -lsetupapi -lole32
+CFLAGS+=-I/mingw64/include/ncurses
+LIBS+=-lwinmm -lsetupapi -lole32
+endif
 
 # The other bits.
 DOCS = README LICENSE ChangeLog
